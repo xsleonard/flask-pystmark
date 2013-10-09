@@ -1,4 +1,4 @@
-flask_pystmark
+flask-pystmark
 ==============
 
 Flask extension for Pystmark
