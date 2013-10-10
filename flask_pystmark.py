@@ -66,26 +66,6 @@ class Pystmark(object):
         '''
         return self._pystmark_call(get_bounces, **request_args)
 
-    def get_bounce(self, bounce_id, **request_args):
-        '''Get a single bounce.
-
-        :param bounce_id: The bounce's id. Get the id with :func:`get_bounces`.
-        :param \*\*request_args: Keyword arguments to pass to
-            :func:`requests.request`.
-        :rtype: :class:`pystmark.BounceResponse`
-        '''
-        return self._pystmark_call(get_bounce, **request_args)
-
-    def get_bounce_dump(self, bounce_id, **request_args):
-        '''Get the raw email dump for a single bounce.
-
-        :param bounce_id: The bounce's id. Get the id with :func:`get_bounces`.
-        :param \*\*request_args: Keyword arguments to pass to
-            :func:`requests.request`.
-        :rtype: :class:`pystmark.BounceDumpResponse`
-        '''
-        return self._pystmark_call(get_bounce_dump, **request_args)
-
     def get_bounce_tags(self, **request_args):
         '''Get a list of tags for bounces associated with your Postmark server.
 
@@ -95,6 +75,26 @@ class Pystmark(object):
         '''
         return self._pystmark_call(get_bounce_tags, **request_args)
 
+    def get_bounce(self, bounce_id, **request_args):
+        '''Get a single bounce.
+
+        :param bounce_id: The bounce's id. Get the id with :func:`get_bounces`.
+        :param \*\*request_args: Keyword arguments to pass to
+            :func:`requests.request`.
+        :rtype: :class:`pystmark.BounceResponse`
+        '''
+        return self._pystmark_call(get_bounce, bounce_id, **request_args)
+
+    def get_bounce_dump(self, bounce_id, **request_args):
+        '''Get the raw email dump for a single bounce.
+
+        :param bounce_id: The bounce's id. Get the id with :func:`get_bounces`.
+        :param \*\*request_args: Keyword arguments to pass to
+            :func:`requests.request`.
+        :rtype: :class:`pystmark.BounceDumpResponse`
+        '''
+        return self._pystmark_call(get_bounce_dump, bounce_id, **request_args)
+
     def activate_bounce(self, bounce_id, **request_args):
         '''Activate a deactivated bounce.
 
@@ -103,27 +103,30 @@ class Pystmark(object):
             :func:`requests.request`.
         :rtype: :class:`pystmark.BounceActivateResponse`
         '''
-        return self._pystmark_call(activate_bounce, **request_args)
+        return self._pystmark_call(activate_bounce, bounce_id, **request_args)
 
-    def _apply_config(self, kwargs):
+    def _pystmark_call(self, method, *args, **kwargs):
+        ''' Wraps a call to the pystmark Simple API, adding configured
+        settings '''
+        kwargs = self._apply_config(**kwargs)
+        return method(*args, **kwargs)
+
+    @staticmethod
+    def _apply_config(**kwargs):
         '''Adds the current_app's pystmark configuration to a dict
 
         :param kwargs: Keyword arguments to be passed to the pystmark Simple
         API
         '''
-        kwargs['api_key'] = current_app.config['PYSTMARK_API_KEY']
-        kwargs['secure'] = current_app.config.get('PYSTMARK_HTTPS', True)
-        kwargs['test'] = current_app.config.get('PYSTMARK_TEST_API', False)
+        return dict(api_key=current_app.config['PYSTMARK_API_KEY'],
+                    secure=current_app.config.get('PYSTMARK_HTTPS', True),
+                    test=current_app.config.get('PYSTMARK_TEST_API', False),
+                    **kwargs)
 
-    def _is_testing(self):
+    @staticmethod
+    def _is_testing():
         ''' Return whether the app is TESTING or not '''
         return current_app.config.get('TESTING', False)
-
-    def _pystmark_call(self, method, *args, **kwargs):
-        ''' Wraps a call to the pystmark Simple API, adding configured
-        settings '''
-        self._apply_config(kwargs)
-        return method(*args, **kwargs)
 
 
 class Message(_Message):
