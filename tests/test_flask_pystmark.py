@@ -10,13 +10,17 @@ class FlaskPystmarkTest(TestCase):
     def setUp(self):
         super(FlaskPystmarkTest, self).setUp()
         self.app = Flask(__name__)
+        self._ctx = self.app.test_request_context()
+        self._ctx.push()
 
     def tearDown(self):
         super(FlaskPystmarkTest, self).tearDown()
+        if self._ctx is not None:
+            self._ctx.pop()
 
     def test_create(self):
         p = Pystmark()
-        self.assertTrue(hasattr(p, 'outbox')
+        self.assertTrue(hasattr(p, 'outbox'))
         self.assertEqual(p.outbox, [])
 
     def test_create_with_app(self):
@@ -41,4 +45,4 @@ class FlaskPystmarkTest(TestCase):
         p = Pystmark(app=self.app)
         headers = dict(whatever='something')
         p.send(m, **dict(headers=headers))
-        mock_call.assert_called_with(pystmark.send, m, header=headers)
+        mock_call.assert_called_with(pystmark.send, m, headers=headers)
