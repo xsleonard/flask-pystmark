@@ -7,11 +7,20 @@ Flask-Pystmark
 A Flask extension for Pystmark (a Postmark API library)
 """
 
-from setuptools import setup
+import os
+import sys
+import subprocess
+import shlex
+from setuptools import setup, Command
+
+pypy = False
+if 'pypy' in sys.version.lower():
+    pypy = True
 
 about = {}
 with open('__about__.py') as f:
     exec(f.read(), about)
+
 
 class Test(Command):
     ''' Test application with the following:
@@ -28,7 +37,7 @@ class Test(Command):
 
     _files = ['__about__.py', 'flask_pystmark.py']
 
-    _test_requirements = ['flake8', 'nose', 'disabledoc', 'coverage']
+    _test_requirements = ['flake8', 'nose', 'disabledoc', 'coverage', 'mock']
 
     @property
     def files(self):
@@ -122,15 +131,16 @@ class Test(Command):
 
 
 setup(
-    name=about['__title__']
+    name=about['__title__'],
     version='0.1',
     url='https://github.com/xsleonard/flask-pystmark',
     license='MIT',
     author='Steve Leonard',
     author_email='sleonard76@gmail.com',
-    description=about['description'],
+    description=about['__description__'],
     long_description=__doc__,
     py_modules=['flask_pystmark', '__about__'],
+    cmdclass=dict(test=Test),
     zip_safe=False,
     include_package_data=True,
     platforms='any',

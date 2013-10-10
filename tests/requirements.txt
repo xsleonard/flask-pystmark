@@ -1,3 +1,5 @@
+mock
+coverage
 nose
 disabledoc
 flake8
