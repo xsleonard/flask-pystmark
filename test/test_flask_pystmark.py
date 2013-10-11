@@ -51,10 +51,12 @@ class FlaskPystmarkCreateTest(FlaskPystmarkCreateTestBase):
         p = Pystmark(app=self.app)
         self.assertEqual(self.app.pystmark, p)
 
-    def test_init_app(self):
+    @patch.object(Flask, 'teardown_request')
+    def test_init_app(self, mock_teardown):
         p = Pystmark()
         p.init_app(self.app)
         self.assertEqual(self.app.pystmark, p)
+        mock_teardown.assert_called_once_with(p._clear_outbox)
 
 
 @patch.object(Pystmark, '_pystmark_call')
@@ -232,6 +234,12 @@ class FlaskPystmarkInternalsTest(FlaskPystmarkTestBase):
         mock_apply_config.assert_called_once_with(**self.req_args)
         mock_send.assert_called_with(m, api_key=self.api_key, test=False,
                                      secure=True, headers=self.headers)
+
+    def test_clear_outbox(self):
+        self.p.outbox = range(3)
+        self.assertEqual(self.p.outbox, range(3))
+        self.p._clear_outbox()
+        self.assertEqual(self.p.outbox, [])
 
 
 class FlaskPystmarkMessageTest(FlaskPystmarkCreateTestBase):

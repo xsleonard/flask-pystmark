@@ -20,11 +20,12 @@ class Pystmark(object):
     def __init__(self, app=None):
         if app is not None:
             self.init_app(app)
-        self.outbox = []
+        self._clear_outbox()
 
     def init_app(self, app):
         ''' Initialize Pystmark with a Flask app '''
         app.pystmark = self
+        app.teardown_request(self._clear_outbox)
 
     def send(self, message, **request_args):
         '''Send a message.  If TESTING is enabled, the message will
@@ -141,6 +142,9 @@ class Pystmark(object):
     def _is_testing():
         ''' Return whether the app is TESTING or not '''
         return current_app.config.get('TESTING', False)
+
+    def _clear_outbox(self, *args, **kwargs):
+        self.outbox = []
 
 
 class Message(_Message):
