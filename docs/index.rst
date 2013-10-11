@@ -64,8 +64,6 @@ These are the available options:
 
 * **PYSTMARK_VERIFY_MESSAGES** : default `False`. Apply sanity checks to all messages when created.  Will raise `pystmark.MessageError` if it appears invalid.
 
-* **TESTING** : This is a standard Flask configuration variable. If `True`, messages sent with ``Pystmark.send`` or ``Pystmark.send_batch`` will be stored in an ``outbox`` on your app's Pystmark instance. *Note: This does not mock the request to postmarkapp.com for you.*
-
 .. _example:
 
 Example

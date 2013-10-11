@@ -43,20 +43,16 @@ class FlaskPystmarkTestBase(FlaskPystmarkCreateTestBase):
 class FlaskPystmarkCreateTest(FlaskPystmarkCreateTestBase):
 
     def test_create(self):
-        p = Pystmark()
-        self.assertTrue(hasattr(p, 'outbox'))
-        self.assertEqual(p.outbox, [])
+        self.assertTrue(Pystmark())
 
     def test_create_with_app(self):
         p = Pystmark(app=self.app)
         self.assertEqual(self.app.pystmark, p)
 
-    @patch.object(Flask, 'teardown_request')
-    def test_init_app(self, mock_teardown):
+    def test_init_app(self):
         p = Pystmark()
         p.init_app(self.app)
         self.assertEqual(self.app.pystmark, p)
-        mock_teardown.assert_called_once_with(p._clear_outbox)
 
 
 @patch.object(Pystmark, '_pystmark_call')
@@ -66,122 +62,82 @@ class FlaskPystmarkAPITest(FlaskPystmarkTestBase):
         m = Message()
         self.p.send(m)
         mock_call.assert_called_with(pystmark.send, m)
-        self.assertEqual(self.p.outbox, [])
 
     def test_send_req_args(self, mock_call):
         m = Message()
         self.p.send(m, **self.req_args)
         mock_call.assert_called_with(pystmark.send, m, headers=self.headers)
-        self.assertEqual(self.p.outbox, [])
-
-    def test_send_is_testing(self, mock_call):
-        self.app.config['TESTING'] = True
-        self.assertEqual(self.p.outbox, [])
-        m = Message()
-        self.p.send(m)
-        self.assertEqual(self.p.outbox, [m])
-        mock_call.assert_called_with(pystmark.send, m)
-        mock_call.reset()
-        self.p.send(m)
-        self.assertEqual(self.p.outbox, [m, m])
-        mock_call.assert_called_with(pystmark.send, m)
 
     def test_send_batch(self, mock_call):
         msgs = [Message(text='thing'), Message(text='other')]
         self.p.send_batch(msgs)
         mock_call.assert_called_with(pystmark.send_batch, msgs)
-        self.assertEqual(self.p.outbox, [])
 
     def test_send_batch_req_args(self, mock_call):
         msgs = [Message(text='thing'), Message(text='other')]
         self.p.send_batch(msgs, **self.req_args)
         mock_call.assert_called_with(pystmark.send_batch, msgs,
                                      headers=self.headers)
-        self.assertEqual(self.p.outbox, [])
-
-    def test_send_batch_is_testing(self, mock_call):
-        self.app.config['TESTING'] = True
-        msgs = [Message(text='thing'), Message(text='other')]
-        self.assertEqual(self.p.outbox, [])
-        self.p.send_batch(msgs)
-        self.assertEqual(self.p.outbox, msgs)
-        mock_call.assert_called_with(pystmark.send_batch, msgs)
-        mock_call.reset()
-        self.p.send_batch(msgs)
-        self.assertEqual(self.p.outbox, msgs * 2)
-        mock_call.assert_called_with(pystmark.send_batch, msgs)
 
     def test_get_delivery_stats(self, mock_call):
         self.p.get_delivery_stats()
         mock_call.assert_called_with(pystmark.get_delivery_stats)
-        self.assertEqual(self.p.outbox, [])
 
     def test_get_delivery_stats_req_args(self, mock_call):
         self.p.get_delivery_stats(**self.req_args)
         mock_call.assert_called_with(pystmark.get_delivery_stats,
                                      headers=self.headers)
-        self.assertEqual(self.p.outbox, [])
 
     def test_get_bounces(self, mock_call):
         self.p.get_bounces()
         mock_call.assert_called_with(pystmark.get_bounces)
-        self.assertEqual(self.p.outbox, [])
 
     def test_get_bounces_req_args(self, mock_call):
         self.p.get_bounces(**self.req_args)
         mock_call.assert_called_with(pystmark.get_bounces,
                                      headers=self.headers)
-        self.assertEqual(self.p.outbox, [])
 
     def test_get_bounce(self, mock_call):
         bounce_id = '1'
         self.p.get_bounce(bounce_id)
         mock_call.assert_called_with(pystmark.get_bounce, bounce_id)
-        self.assertEqual(self.p.outbox, [])
 
     def test_get_bounce_req_args(self, mock_call):
         bounce_id = '1'
         self.p.get_bounce(bounce_id, **self.req_args)
         mock_call.assert_called_with(pystmark.get_bounce, bounce_id,
                                      headers=self.headers)
-        self.assertEqual(self.p.outbox, [])
 
     def test_get_bounce_dump(self, mock_call):
         bounce_id = '1'
         self.p.get_bounce_dump(bounce_id)
         mock_call.assert_called_with(pystmark.get_bounce_dump, bounce_id)
-        self.assertEqual(self.p.outbox, [])
 
     def test_get_bounce_dump_req_args(self, mock_call):
         bounce_id = '1'
         self.p.get_bounce_dump(bounce_id, **self.req_args)
         mock_call.assert_called_with(pystmark.get_bounce_dump, bounce_id,
                                      headers=self.headers)
-        self.assertEqual(self.p.outbox, [])
 
     def test_get_bounce_tags(self, mock_call):
         self.p.get_bounce_tags()
         mock_call.assert_called_with(pystmark.get_bounce_tags)
-        self.assertEqual(self.p.outbox, [])
 
     def test_get_bounce_tags_req_args(self, mock_call):
         self.p.get_bounce_tags(**self.req_args)
         mock_call.assert_called_with(pystmark.get_bounce_tags,
                                      headers=self.headers)
-        self.assertEqual(self.p.outbox, [])
 
     def test_activate_bounce(self, mock_call):
         bounce_id = '1'
         self.p.activate_bounce(bounce_id)
         mock_call.assert_called_with(pystmark.activate_bounce, bounce_id)
-        self.assertEqual(self.p.outbox, [])
 
     def test_activate_bounce_req_args(self, mock_call):
         bounce_id = '1'
         self.p.activate_bounce(bounce_id, **self.req_args)
         mock_call.assert_called_with(pystmark.activate_bounce, bounce_id,
                                      headers=self.headers)
-        self.assertEqual(self.p.outbox, [])
 
 
 class FlaskPystmarkInternalsTest(FlaskPystmarkTestBase):
@@ -209,12 +165,6 @@ class FlaskPystmarkInternalsTest(FlaskPystmarkTestBase):
         d = self.p._apply_config(**kwargs)
         self.assertEqual(d, kwargs)
 
-    def test_is_testing(self):
-        self.app.config['TESTING'] = True
-        self.assertTrue(self.p._is_testing())
-        self.app.config['TESTING'] = False
-        self.assertFalse(self.p._is_testing())
-
     @patch.object(Pystmark, '_apply_config')
     @patch('flask_pystmark.send')
     def test_pystmark_call(self, mock_send, mock_apply_config):
@@ -234,12 +184,6 @@ class FlaskPystmarkInternalsTest(FlaskPystmarkTestBase):
         mock_apply_config.assert_called_once_with(**self.req_args)
         mock_send.assert_called_with(m, api_key=self.api_key, test=False,
                                      secure=True, headers=self.headers)
-
-    def test_clear_outbox(self):
-        self.p.outbox = range(3)
-        self.assertEqual(self.p.outbox, range(3))
-        self.p._clear_outbox()
-        self.assertEqual(self.p.outbox, [])
 
 
 class FlaskPystmarkMessageTest(FlaskPystmarkCreateTestBase):

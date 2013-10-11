@@ -20,17 +20,13 @@ class Pystmark(object):
     def __init__(self, app=None):
         if app is not None:
             self.init_app(app)
-        self._clear_outbox()
 
     def init_app(self, app):
         ''' Initialize Pystmark with a Flask app '''
         app.pystmark = self
-        app.teardown_request(self._clear_outbox)
 
     def send(self, message, **request_args):
-        '''Send a message.  If TESTING is enabled, the message will
-        be added to self.outbox.  The message will still be sent, so you'll
-        want to mock :meth:`Pystmark._pystmark_call` as well.
+        '''Send a message.
 
         :param message: Message to send.
         :type message: `dict` or :class:`Message`
@@ -38,14 +34,10 @@ class Pystmark(object):
             :func:`requests.request`.
         :rtype: :class:`pystmark.SendResponse`
         '''
-        if self._is_testing():
-            self.outbox.append(message)
         return self._pystmark_call(send, message, **request_args)
 
     def send_batch(self, messages, **request_args):
-        '''Send a batch of messages. If TESTING is enabled, the message will
-        be added to self.outbox.  The message will still be sent, so you'll
-        want to mock :meth:`Pystmark._pystmark_call` as well.
+        '''Send a batch of messages.
 
         :param messages: Messages to send.
         :type message: A list of `dict` or :class:`Message`
@@ -53,8 +45,6 @@ class Pystmark(object):
             :func:`requests.request`.
         :rtype: :class:`pystmark.BatchSendResponse`
         '''
-        if self._is_testing():
-            self.outbox += messages
         return self._pystmark_call(send_batch, messages, **request_args)
 
     def get_delivery_stats(self, **request_args):
@@ -137,14 +127,6 @@ class Pystmark(object):
         kwargs.setdefault('test', current_app.config.get('PYSTMARK_TEST_API',
                                                          False))
         return kwargs
-
-    @staticmethod
-    def _is_testing():
-        ''' Return whether the app is TESTING or not '''
-        return current_app.config.get('TESTING', False)
-
-    def _clear_outbox(self, *args, **kwargs):
-        self.outbox = []
 
 
 class Message(_Message):
