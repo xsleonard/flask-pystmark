@@ -5,6 +5,10 @@ Flask-Pystmark
 -------------
 
 A Flask extension for Pystmark (a Postmark API library)
+
+Complete documentation: http://flask-pystmark.readthedocs.org/en/latest/
+Project site: https://github.com/xsleonard/flask-pystmark
+
 """
 
 import os
