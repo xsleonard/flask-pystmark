@@ -17,3 +17,5 @@ Flask-Pystmark
 Flask-Pystmark supports Python 2.6, 2.7, 3.3 and PyPy.
 
 Read the complete `Documentation`_
+
+To run the tests, do ``python setup.py test``.

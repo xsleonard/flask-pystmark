@@ -9,3 +9,5 @@ Flask extension for [Pystmark](https://github.com/xsleonard/pystmark), a Postmar
 Flask-Pystmark supports Python 2.6, 2.7, 3.3 and PyPy.
 
 [Read the complete docs](https://flask-pystmark.readthedocs.org)
+
+To run the tests, do `python setup.py test`
