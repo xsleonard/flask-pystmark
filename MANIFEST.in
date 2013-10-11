@@ -1,1 +1,2 @@
 include test/requirements.txt
+include LICENSE
