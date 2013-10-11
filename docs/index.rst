@@ -76,6 +76,7 @@ Example
     # app.py
     from flask import Flask
     from flask.ext.pystmark import Pystmark, Message
+    from pystmark import ResponseError
 
     app = Flask(__name__)
     app.config['PYSTMARK_API_KEY'] = 'your_api_key'
@@ -86,10 +87,12 @@ Example
     def send():
         m = Message(to='user@gmail.com', text='Welcome')
         resp = pystmark.send(m)
-        if resp.message == 'OK':
-            return 'Sent message to {}'.format(resp.to)
+        try:
+            resp.raise_for_status()
+        except ResponseError as e:
+            return 'Failed to send message. Reason: {}'.format(e)
         else:
-            return 'Failed to send message. Reason: {}'.format(resp.message)
+            return 'Sent message to {}'.format(resp.message.to)
 
 
 .. _api:
