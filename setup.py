@@ -48,7 +48,7 @@ class Test(Command):
         # Disable the flake8 tests in pypy due to bug in pep8 module
         self.nose_only = pypy
         self.with_integration = False
-        self.flake8 = 'flake8 {0} tests/'.format(self.files)
+        self.flake8 = 'flake8 {0} test/'.format(self.files)
 
     def finalize_options(self):
         pass
@@ -80,7 +80,7 @@ class Test(Command):
         return files
 
     def _get_nose_command(self):
-        nosecmd = ('nosetests -v -w tests/ --cover-package=flask_pystmark '
+        nosecmd = ('nosetests -v -w test/ --cover-package=flask_pystmark '
                    '--cover-package=__about__ '
                    '--cover-min-percentage=100 --with-coverage '
                    '--disable-docstring --cover-erase')
