@@ -78,6 +78,7 @@ Example
     from flask.ext.pystmark import Pystmark, Message
 
     app = Flask(__name__)
+    app.config['PYSTMARK_API_KEY'] = 'your_api_key'
     app.config['PYSTMARK_DEFAULT_SENDER'] = 'admin@example.com'
     pystmark = Pystmark(app)
 
