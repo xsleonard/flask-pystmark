@@ -17,7 +17,7 @@ configuration variables into the functions or objects they wrap.
 
 .. seealso:: `Pystmark Documentation`_
 
-Flask-Pystmark supports Python 2.6, 2.7, and PyPy.
+Flask-Pystmark supports Python 2.6, 2.7, 3.3 and PyPy.
 
 .. _usecase:
     In Flask, one way to have your site available as both example.com and

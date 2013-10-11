@@ -8,6 +8,6 @@ Flask-Pystmark
 
 `Flask`_ extension for `Pystmark`_, a `Postmark API`_ library.
 
-Flask-Pystmark supports Python 2.6, 2.7, and PyPy.
+Flask-Pystmark supports Python 2.6, 2.7, 3.3 and PyPy.
 
 Read the complete `Documentation`_
