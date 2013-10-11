@@ -5,6 +5,15 @@ from flask import Flask
 from flask_pystmark import Pystmark, Message
 
 
+def test_flask_ext_import():
+    try:
+        import flask.ext.pystmark
+    except ImportError:
+        assert False
+    else:
+        assert flask.ext.pystmark
+
+
 class FlaskPystmarkCreateTestBase(TestCase):
 
     def setUp(self):
@@ -191,6 +200,13 @@ class FlaskPystmarkInternalsTest(FlaskPystmarkTestBase):
         self.assertEqual(d, dict(api_key=self.api_key, secure=False,
                                  test=True, xxx='yyy'))
 
+    def test_apply_config_non_defaults_but_overriding(self):
+        self.app.config['PYSTMARK_HTTPS'] = False
+        self.app.config['PYSTMARK_TEST_API'] = True
+        kwargs = dict(api_key='zzz', secure=True, test=False, xxx='yyy')
+        d = self.p._apply_config(**kwargs)
+        self.assertEqual(d, kwargs)
+
     def test_is_testing(self):
         self.app.config['TESTING'] = True
         self.assertTrue(self.p._is_testing())
@@ -240,3 +256,17 @@ class FlaskPystmarkMessageTest(FlaskPystmarkCreateTestBase):
             sender='me@gmail.com', reply_to='you@gmail.com', headers=headers,
             verify=True, to=None, cc=None, bcc=None, subject=None, tag=None,
             html=None, text=None, attachments=None)
+
+    @patch('flask_pystmark._Message.__init__')
+    def test_create_with_configuration_but_overriding(self, mock_init):
+        self.app.config['PYSTMARK_DEFAULT_SENDER'] = 'me@gmail.com'
+        self.app.config['PYSTMARK_DEFAULT_REPLY_TO'] = 'you@gmail.com'
+        headers = [dict(Name='x', Value='y')]
+        self.app.config['PYSTMARK_DEFAULT_HEADERS'] = headers
+        self.app.config['PYSTMARK_VERIFY_MESSAGES'] = True
+        Message(sender='not_me@gmail.com', reply_to='not_you@gmail.com',
+                headers=[], verify=False)
+        mock_init.assert_called_with(
+            sender='not_me@gmail.com', reply_to='not_you@gmail.com',
+            headers=[], verify=False, to=None, cc=None, bcc=None, subject=None,
+            tag=None, html=None, text=None, attachments=None)

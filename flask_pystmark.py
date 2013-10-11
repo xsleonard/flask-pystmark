@@ -9,6 +9,13 @@ __all__ = ['__version__', '__title__', '__description__', 'Pystmark',
 
 
 class Pystmark(object):
+    ''' A wrapper around the Simple API of pystmark.
+
+    Refer to http://pystmark.readthedocs.org/en/latest/api.html#simple-api for
+    more details.
+
+    :param app: Flask app to initialize with. Defaults to `None`
+    '''
 
     def __init__(self, app=None):
         if app is not None:
@@ -16,6 +23,7 @@ class Pystmark(object):
         self.outbox = []
 
     def init_app(self, app):
+        ''' Initialize Pystmark with a Flask app '''
         app.pystmark = self
 
     def send(self, message, **request_args):
@@ -107,21 +115,27 @@ class Pystmark(object):
 
     def _pystmark_call(self, method, *args, **kwargs):
         ''' Wraps a call to the pystmark Simple API, adding configured
-        settings '''
+        settings
+        '''
         kwargs = self._apply_config(**kwargs)
         return method(*args, **kwargs)
 
     @staticmethod
     def _apply_config(**kwargs):
-        '''Adds the current_app's pystmark configuration to a dict
+        '''Adds the current_app's pystmark configuration to a dict. If a
+        configuration value has been specified in \*\*kwargs, it will not
+        be overriden by the app's configuration.
 
         :param kwargs: Keyword arguments to be passed to the pystmark Simple
-        API
+            API
         '''
-        return dict(api_key=current_app.config['PYSTMARK_API_KEY'],
-                    secure=current_app.config.get('PYSTMARK_HTTPS', True),
-                    test=current_app.config.get('PYSTMARK_TEST_API', False),
-                    **kwargs)
+        kwargs = dict(**kwargs)
+        kwargs.setdefault('api_key', current_app.config['PYSTMARK_API_KEY'])
+        kwargs.setdefault('secure', current_app.config.get('PYSTMARK_HTTPS',
+                                                           True))
+        kwargs.setdefault('test', current_app.config.get('PYSTMARK_TEST_API',
+                                                         False))
+        return kwargs
 
     @staticmethod
     def _is_testing():
@@ -134,6 +148,9 @@ class Message(_Message):
     You can populate this message with defaults for initializing an
     :class:`Interface` from the pystmark library. The message will be combined
     with the final message and verified before transmission.
+
+    Refer to http://pystmark.readthedocs.org/en/latest/api.html#message-object
+    for more details.
 
     :param sender: Email address of the sender. Defaults to
         PYSTMARK_DEFAULT_SENDER if defined.
@@ -163,14 +180,14 @@ class Message(_Message):
 
     def __init__(self, sender=None, to=None, cc=None, bcc=None, subject=None,
                  tag=None, html=None, text=None, reply_to=None, headers=None,
-                 attachments=None, verify=False):
+                 attachments=None, verify=None):
         if sender is None:
             sender = current_app.config.get('PYSTMARK_DEFAULT_SENDER')
         if reply_to is None:
             reply_to = current_app.config.get('PYSTMARK_DEFAULT_REPLY_TO')
         if headers is None:
             headers = current_app.config.get('PYSTMARK_DEFAULT_HEADERS')
-        if not verify:
+        if verify is None:
             verify = current_app.config.get('PYSTMARK_VERIFY_MESSAGES', False)
         super(Message, self).__init__(sender=sender, to=to, cc=cc, bcc=bcc,
                                       subject=subject, tag=tag, html=html,

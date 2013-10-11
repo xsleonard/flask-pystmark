@@ -37,3 +37,5 @@ nosetests.xml
 
 .coverage
 .noseids
+
+_build
