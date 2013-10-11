@@ -6,9 +6,12 @@ Flask-Pystmark
 
 A Flask extension for Pystmark (a Postmark API library)
 
-Complete documentation: http://flask-pystmark.readthedocs.org/en/latest/
-Project site: https://github.com/xsleonard/flask-pystmark
+Links
+`````
 
+* `documentation <http://flask-pystmark.readthedocs.org/en/latest/>`_
+* `github <https://github.com/xsleonard/flask-pystmark>`_
+* `development version <https://github.com/xsleonard/flask-pystmark/tarball/master#egg=Flask-Pystmark>`_
 """
 
 import os
@@ -145,6 +148,13 @@ setup(
     platforms='any',
     install_requires=[
         'Flask', 'pystmark'
+    ],
+    tests_require=[
+        'nose',
+        'coverage',
+        'disabledoc',
+        'mock',
+        'flake8',
     ],
     classifiers=[
         'Environment :: Web Environment',
