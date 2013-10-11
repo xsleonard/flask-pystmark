@@ -1,8 +1,10 @@
 Flask-Pystmark
 ==============
 
-.. image:: https://travis-ci.org/xsleonard/flask-pystmark.png :target: https://travis-ci.org/xsleonard/flask-pystmark
-.. image:: https://coveralls.io/repos/xsleonard/flask-pystmark/badge.png :target: https://coveralls.io/r/xsleonard/flask-pystmark
+.. image:: https://travis-ci.org/xsleonard/flask-pystmark.png 
+    :target: https://travis-ci.org/xsleonard/flask-pystmark
+.. image:: https://coveralls.io/repos/xsleonard/flask-pystmark/badge.png 
+    :target: https://coveralls.io/r/xsleonard/flask-pystmark
 
 .. _Flask: http://flask.pocoo.org/
 .. _Pystmark: https://github.com/xsleonard/pystmark
