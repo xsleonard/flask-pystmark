@@ -127,7 +127,7 @@ class Test(Command):
 
 setup(
     name=about['__title__'],
-    version='0.1',
+    version=about['__version__'],
     url='https://github.com/xsleonard/flask-pystmark',
     license='MIT',
     author='Steve Leonard',
