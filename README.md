@@ -1,6 +1,7 @@
 Flask-Pystmark
 ==============
 
+[![PyPI version](https://badge.fury.io/py/Flask-Pystmark.png)](http://badge.fury.io/py/Flask-Pystmark)
 [![Build Status](https://travis-ci.org/xsleonard/flask-pystmark.png)](https://travis-ci.org/xsleonard/flask-pystmark)
 [![Coverage Status](https://coveralls.io/repos/xsleonard/flask-pystmark/badge.png)](https://coveralls.io/r/xsleonard/flask-pystmark)
 
