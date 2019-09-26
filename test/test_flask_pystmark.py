@@ -5,15 +5,6 @@ from flask import Flask
 from flask_pystmark import Pystmark, Message
 
 
-def test_flask_ext_import():
-    try:
-        import flask.ext.pystmark
-    except ImportError:
-        assert False
-    else:
-        assert flask.ext.pystmark
-
-
 class FlaskPystmarkCreateTestBase(TestCase):
 
     def setUp(self):
