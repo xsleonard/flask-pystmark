@@ -2,7 +2,7 @@
 
 """
 Flask-Pystmark
--------------
+--------------
 
 A Flask extension for Pystmark (a Postmark API library)
 
@@ -131,7 +131,6 @@ class Test(Command):
                 raise SystemExit(-1)
         raise SystemExit(0)
 
-
 setup(
     name=about['__title__'],
     version=about['__version__'],
@@ -141,6 +140,7 @@ setup(
     author_email='sleonard76@gmail.com',
     description=about['__description__'],
     long_description=__doc__,
+    long_description_content_type='test/x-rst',
     py_modules=['flask_pystmark', '__about__'],
     cmdclass=dict(test=Test),
     zip_safe=False,
