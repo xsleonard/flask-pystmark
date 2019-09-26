@@ -140,7 +140,7 @@ setup(
     author_email='sleonard76@gmail.com',
     description=about['__description__'],
     long_description=__doc__,
-    long_description_content_type='test/x-rst',
+    long_description_content_type='text/x-rst',
     py_modules=['flask_pystmark', '__about__'],
     cmdclass=dict(test=Test),
     zip_safe=False,
