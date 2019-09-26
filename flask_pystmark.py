@@ -30,7 +30,7 @@ class Pystmark(object):
 
         :param message: Message to send.
         :type message: `dict` or :class:`Message`
-        :param \*\*request_args: Keyword arguments to pass to
+        :param \\*\\*request_args: Keyword arguments to pass to
             :func:`requests.request`.
         :rtype: :class:`pystmark.SendResponse`
         '''
@@ -41,7 +41,7 @@ class Pystmark(object):
 
         :param messages: Messages to send.
         :type message: A list of `dict` or :class:`Message`
-        :param \*\*request_args: Keyword arguments to pass to
+        :param \\*\\*request_args: Keyword arguments to pass to
             :func:`requests.request`.
         :rtype: :class:`pystmark.BatchSendResponse`
         '''
@@ -50,7 +50,7 @@ class Pystmark(object):
     def get_delivery_stats(self, **request_args):
         '''Get delivery stats for your Postmark account.
 
-        :param \*\*request_args: Keyword arguments to pass to
+        :param \\*\\*request_args: Keyword arguments to pass to
             :func:`requests.request`.
         :rtype: :class:`pystmark.DeliveryStatsResponse`
         '''
@@ -59,7 +59,7 @@ class Pystmark(object):
     def get_bounces(self, **request_args):
         '''Get a paginated list of bounces.
 
-        :param \*\*request_args: Keyword arguments to pass to
+        :param \\*\\*request_args: Keyword arguments to pass to
             :func:`requests.request`.
         :rtype: :class:`pystmark.BouncesResponse`
         '''
@@ -68,7 +68,7 @@ class Pystmark(object):
     def get_bounce_tags(self, **request_args):
         '''Get a list of tags for bounces associated with your Postmark server.
 
-        :param \*\*request_args: Keyword arguments to pass to
+        :param \\*\\*request_args: Keyword arguments to pass to
             :func:`requests.request`.
         :rtype: :class:`pystmark.BounceTagsResponse`
         '''
@@ -78,7 +78,7 @@ class Pystmark(object):
         '''Get a single bounce.
 
         :param bounce_id: The bounce's id. Get the id with :func:`get_bounces`.
-        :param \*\*request_args: Keyword arguments to pass to
+        :param \\*\\*request_args: Keyword arguments to pass to
             :func:`requests.request`.
         :rtype: :class:`pystmark.BounceResponse`
         '''
@@ -88,7 +88,7 @@ class Pystmark(object):
         '''Get the raw email dump for a single bounce.
 
         :param bounce_id: The bounce's id. Get the id with :func:`get_bounces`.
-        :param \*\*request_args: Keyword arguments to pass to
+        :param \\*\\*request_args: Keyword arguments to pass to
             :func:`requests.request`.
         :rtype: :class:`pystmark.BounceDumpResponse`
         '''
@@ -98,7 +98,7 @@ class Pystmark(object):
         '''Activate a deactivated bounce.
 
         :param bounce_id: The bounce's id. Get the id with :func:`get_bounces`.
-        :param \*\*request_args: Keyword arguments to pass to
+        :param \\*\\*request_args: Keyword arguments to pass to
             :func:`requests.request`.
         :rtype: :class:`pystmark.BounceActivateResponse`
         '''
@@ -114,7 +114,7 @@ class Pystmark(object):
     @staticmethod
     def _apply_config(**kwargs):
         '''Adds the current_app's pystmark configuration to a dict. If a
-        configuration value has been specified in \*\*kwargs, it will not
+        configuration value has been specified in \\*\\*kwargs, it will not
         be overriden by the app's configuration.
 
         :param kwargs: Keyword arguments to be passed to the pystmark Simple
@@ -166,7 +166,7 @@ class Message(_Message):
 
     def __init__(self, sender=None, to=None, cc=None, bcc=None, subject=None,
                  tag=None, html=None, text=None, reply_to=None, headers=None,
-                 attachments=None, verify=None):
+                 attachments=None, verify=None, track_opens=None):
         if sender is None:
             sender = current_app.config.get('PYSTMARK_DEFAULT_SENDER')
         if reply_to is None:
@@ -179,4 +179,4 @@ class Message(_Message):
                                       subject=subject, tag=tag, html=html,
                                       text=text, reply_to=reply_to,
                                       headers=headers, attachments=attachments,
-                                      verify=verify)
+                                      verify=verify, track_opens=track_opens)

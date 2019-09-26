@@ -73,7 +73,7 @@ Example
 
     # app.py
     from flask import Flask
-    from flask.ext.pystmark import Pystmark, Message
+    from flask_pystmark import Pystmark, Message
     from pystmark import ResponseError
 
     app = Flask(__name__)

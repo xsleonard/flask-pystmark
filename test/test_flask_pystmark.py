@@ -5,15 +5,6 @@ from flask import Flask
 from flask_pystmark import Pystmark, Message
 
 
-def test_flask_ext_import():
-    try:
-        import flask.ext.pystmark
-    except ImportError:
-        assert False
-    else:
-        assert flask.ext.pystmark
-
-
 class FlaskPystmarkCreateTestBase(TestCase):
 
     def setUp(self):
@@ -194,7 +185,7 @@ class FlaskPystmarkMessageTest(FlaskPystmarkCreateTestBase):
         mock_init.assert_called_with(
             sender=None, reply_to=None, headers=None, verify=False, to=None,
             cc=None, bcc=None, subject=None, tag=None, html=None, text=None,
-            attachments=None)
+            attachments=None, track_opens=None)
 
     @patch('flask_pystmark._Message.__init__')
     def test_create_with_configuration(self, mock_init):
@@ -207,7 +198,7 @@ class FlaskPystmarkMessageTest(FlaskPystmarkCreateTestBase):
         mock_init.assert_called_with(
             sender='me@gmail.com', reply_to='you@gmail.com', headers=headers,
             verify=True, to=None, cc=None, bcc=None, subject=None, tag=None,
-            html=None, text=None, attachments=None)
+            html=None, text=None, attachments=None, track_opens=None)
 
     @patch('flask_pystmark._Message.__init__')
     def test_create_with_configuration_but_overriding(self, mock_init):
@@ -221,4 +212,4 @@ class FlaskPystmarkMessageTest(FlaskPystmarkCreateTestBase):
         mock_init.assert_called_with(
             sender='not_me@gmail.com', reply_to='not_you@gmail.com',
             headers=[], verify=False, to=None, cc=None, bcc=None, subject=None,
-            tag=None, html=None, text=None, attachments=None)
+            tag=None, html=None, text=None, attachments=None, track_opens=None)

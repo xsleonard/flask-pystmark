@@ -7,7 +7,7 @@ Flask-Pystmark
 
 Flask extension for [Pystmark](https://github.com/xsleonard/pystmark), a Postmark API library.
 
-Flask-Pystmark supports Python 2.6, 2.7, 3.3 and PyPy.
+Flask-Pystmark supports Python 2.7, 3.6 and PyPy.
 
 [Read the complete docs](https://flask-pystmark.readthedocs.org)
 
@@ -18,7 +18,7 @@ Example:
 ```python
 # app.py
 from flask import Flask
-from flask.ext.pystmark import Pystmark, Message
+from flask_pystmark import Pystmark, Message
 from pystmark import ResponseError
 
 app = Flask(__name__)
